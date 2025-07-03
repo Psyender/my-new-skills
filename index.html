@@ -2,112 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Tic Tac Toe</title>
+  <title>Scientific Calculator</title>
   <style>
     body {
       font-family: sans-serif;
-      text-align: center;
-      margin-top: 50px;
-    }
-
-    #board {
-      display: grid;
-      grid-template-columns: repeat(3, 100px);
-      gap: 5px;
-      margin: 0 auto;
-    }
-
-    .cell {
-      width: 100px;
-      height: 100px;
-      background-color: #ddd;
-      font-size: 32px;
       display: flex;
-      align-items: center;
       justify-content: center;
-      cursor: pointer;
+      padding: 40px;
+      background: #f4f4f4;
     }
 
-    .cell:hover {
-      background-color: #ccc;
+    #calculator {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      width: 320px;
     }
 
-    #status {
-      margin-top: 20px;
-      font-size: 20px;
+    input {
+      width: 100%;
+      font-size: 24px;
+      padding: 10px;
+      margin-bottom: 15px;
+      text-align: right;
     }
 
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .buttons button {
+      padding: 15px;
       font-size: 18px;
+      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      background: #e0e0e0;
+      transition: background 0.2s;
+    }
+
+    .buttons button:hover {
+      background: #d0d0d0;
     }
   </style>
 </head>
 <body>
+  <div id="calculator">
+    <input type="text" id="display" readonly />
+    <div class="buttons">
+      <!-- Row 1 -->
+      <button onclick="add('7')">7</button>
+      <button onclick="add('8')">8</button>
+      <button onclick="add('9')">9</button>
+      <button onclick="add('/')">/</button>
 
-  <h1>Tic Tac Toe</h1>
-  <div id="board"></div>
-  <div id="status">Player X's turn</div>
-  <button onclick="resetGame()">Reset</button>
+      <!-- Row 2 -->
+      <button onclick="add('4')">4</button>
+      <button onclick="add('5')">5</button>
+      <button onclick="add('6')">6</button>
+      <button onclick="add('*')">*</button>
+
+      <!-- Row 3 -->
+      <button onclick="add('1')">1</button>
+      <button onclick="add('2')">2</button>
+      <button onclick="add('3')">3</button>
+      <button onclick="add('-')">-</button>
+
+      <!-- Row 4 -->
+      <button onclick="add('0')">0</button>
+      <button onclick="add('.')">.</button>
+      <button onclick="add('+')">+</button>
+      <button onclick="calculate()">=</button>
+
+      <!-- Scientific Row 1 -->
+      <button onclick="add('Math.sin(')">sin</button>
+      <button onclick="add('Math.cos(')">cos</button>
+      <button onclick="add('Math.tan(')">tan</button>
+      <button onclick="add('Math.log(')">log</button>
+
+      <!-- Scientific Row 2 -->
+      <button onclick="add('Math.sqrt(')">√</button>
+      <button onclick="add('Math.pow(')">^</button>
+      <button onclick="add('Math.PI')">π</button>
+      <button onclick="clearDisplay()">C</button>
+    </div>
+  </div>
 
   <script>
-    let currentPlayer = "X";
-    let gameActive = true;
-    const board = Array(9).fill("");
-    const winningCombos = [
-      [0, 1, 2], [3, 4, 5], [6, 7, 8],
-      [0, 3, 6], [1, 4, 7], [2, 5, 8],
-      [0, 4, 8], [2, 4, 6]
-    ];
+    const display = document.getElementById("display");
 
-    const boardDiv = document.getElementById("board");
-    const statusDiv = document.getElementById("status");
-
-    function renderBoard() {
-      boardDiv.innerHTML = "";
-      board.forEach((val, index) => {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.textContent = val;
-        cell.addEventListener("click", () => handleClick(index));
-        boardDiv.appendChild(cell);
-      });
+    function add(val) {
+      display.value += val;
     }
 
-    function handleClick(index) {
-      if (!gameActive || board[index] !== "") return;
-
-      board[index] = currentPlayer;
-      if (checkWin()) {
-        statusDiv.textContent = `Player ${currentPlayer} wins!`;
-        gameActive = false;
-      } else if (!board.includes("")) {
-        statusDiv.textContent = "It's a draw!";
-        gameActive = false;
-      } else {
-        currentPlayer = currentPlayer === "X" ? "O" : "X";
-        statusDiv.textContent = `Player ${currentPlayer}'s turn`;
+    function calculate() {
+      try {
+        const open = (display.value.match(/\(/g) || []).length;
+        const close = (display.value.match(/\)/g) || []).length;
+        const extra = open - close;
+        display.value = eval(display.value + ')'.repeat(extra));
+      } catch (e) {
+        display.value = "Error";
       }
-      renderBoard();
     }
 
-    function checkWin() {
-      return winningCombos.some(combo => {
-        return combo.every(i => board[i] === currentPlayer);
-      });
+    function clearDisplay() {
+      display.value = '';
     }
-
-    function resetGame() {
-      currentPlayer = "X";
-      gameActive = true;
-      board.fill("");
-      statusDiv.textContent = "Player X's turn";
-      renderBoard();
-    }
-
-    renderBoard();
   </script>
-
 </body>
 </html>
