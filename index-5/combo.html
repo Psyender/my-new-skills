@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Simple Calculator</title>
+</head>
+<body>
+    <table border="1">
+        <tr>
+            <td colspan="4">
+                <input type="text" id="inputBox" value="0" readonly />
+            </td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed('7')">7</td>
+            <td class="digitButton" onclick="digitBtnPressed('8')">8</td>
+            <td class="digitButton" onclick="digitBtnPressed('9')">9</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('x')">x</td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed('4')">4</td>
+            <td class="digitButton" onclick="digitBtnPressed('5')">5</td>
+            <td class="digitButton" onclick="digitBtnPressed('6')">6</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('-')">-</td>
+        </tr>
+        <tr>
+            <td class="digitButton" onclick="digitBtnPressed('1')">1</td>
+            <td class="digitButton" onclick="digitBtnPressed('2')">2</td>
+            <td class="digitButton" onclick="digitBtnPressed('3')">3</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('+')">+</td>
+        </tr>
+        <tr>
+            <td colspan="2" class="digitButton" onclick="digitBtnPressed('0')">0</td>
+            <td class="ACButton" onclick="btnACPressed()">AC</td>
+            <td class="operatorButton" onclick="operatorBtnPressed('/')">/</td>
+        </tr>
+        <tr>
+            <td colspan="3" class="operatorButton" onclick="equalsBtnPressed()">=</td>
+            <td class="commaButton" onclick="addDot()">.</td>
+        </tr>
+    </table>
+
+    <script>
+        let newLine = true;  // To know when to overwrite display
+        let value1 = null;
+        let currentOperator = null;
+
+        function digitBtnPressed(digit) {
+            const inputBox = document.getElementById("inputBox");
+            if (newLine || inputBox.value === "0") {
+                inputBox.value = digit;
+                newLine = false;
+            } else {
+                inputBox.value += digit;
+            }
+        }
+
+        function btnACPressed() {
+            document.getElementById("inputBox").value = "0";
+            newLine = true;
+            value1 = null;
+            currentOperator = null;
+        }
+
+        function operatorBtnPressed(operator) {
+            const inputBox = document.getElementById("inputBox");
+            value1 = parseFloat(inputBox.value);
+            currentOperator = operator;
+            newLine = true;
+        }
+
+        function equalsBtnPressed() {
+            if (currentOperator === null || value1 === null) return;
+
+            const inputBox = document.getElementById("inputBox");
+            const value2 = parseFloat(inputBox.value);
+            let finalTotal;
+
+            switch (currentOperator) {
+                case '+':
+                    finalTotal = value1 + value2;
+                    break;
+                case '-':
+                    finalTotal = value1 - value2;
+                    break;
+                case 'x':
+                    finalTotal = value1 * value2;
+                    break;
+                case '/':
+                    if (value2 === 0) {
+                        alert("Cannot divide by zero");
+                        finalTotal = value1;
+                    } else {
+                        finalTotal = value1 / value2;
+                    }
+                    break;
+                default:
+                    finalTotal = value2;
+            }
+
+            inputBox.value = finalTotal;
+            value1 = null;
+            currentOperator = null;
+            newLine = true;
+        }
+
+        function addDot() {
+            const inputBox = document.getElementById("inputBox");
+            if (!inputBox.value.includes('.')) {
+                inputBox.value += '.';
+                newLine = false;
+            }
+        }
+    </script>
+</body>
+</html>
