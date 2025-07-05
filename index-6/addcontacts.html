@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Contact</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 30px;
+    }
+
+    form {
+      max-width: 400px;
+      margin: auto;
+      background-color: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 5px;
+      font-weight: bold;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button#homeLink {
+      background-color: #007bff;
+      margin-left: 10px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="editForm" enctype="multipart/form-data">
+    <label for="firstname">First Name</label>
+    <input type="text" name="firstname" id="firstname" required>
+
+    <label for="lastname">Last Name</label>
+    <input type="text" name="lastname" id="lastname" required>
+
+    <label for="mobile">Mobile</label>
+    <input type="text" name="mobile" id="mobile" required>
+
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="avatar">Select a File</label>
+    <input type="file" name="avatar" id="avatar">
+
+    <button type="submit" id="submitForm">Submit</button>
+    <button type="button" id="homeLink">Home</button>
+  </form>
+
+  <script>
+    document.getElementById("submitForm")
+      .addEventListener("click", submitForm);
+
+    document.getElementById("homeLink")
+      .addEventListener("click", homeLink);
+
+    function submitForm(e) {
+      e.preventDefault();
+
+      const form = new FormData(document.getElementById("editForm"));
+      form.append('apiKey', apiKey); 
+
+      fetch(rootPath + 'controller/insert-contact/', {
+        method: 'POST',
+        body: form
+      })
+      .then(response => response.text())
+      .then(data => {
+        if (data === "1") {
+          alert("Contact added successfully.");
+        } else {
+          alert("Error: " + data);
+        }
+        homeLink();
+      })
+      .catch(err => {
+        console.error("Submission failed:", err);
+        alert("Failed to add contact.");
+        homeLink();
+      });
+    }
+
+    function homeLink() {
+      window.location.href = "ind-ex.html"; 
+    }
+  </script>
+
+</body>
+</html>

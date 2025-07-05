@@ -1,0 +1,81 @@
+/* General page styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Contact list container */
+#contact-list {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: #007bff;
+    color: white;
+}
+
+th, td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Row hover effect */
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Buttons (edit/delete/view) */
+.button {
+    padding: 6px 12px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    text-transform: uppercase;
+}
+
+.button.edit {
+    background-color: #28a745;
+}
+
+.button.delete {
+    background-color: #dc3545;
+}
+
+.button.view {
+    background-color: #17a2b8;
+}
+
+/* Responsive for mobile */
+@media screen and (max-width: 600px) {
+    th, td {
+        font-size: 14px;
+        padding: 8px 10px;
+    }
+
+    .button {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
